@@ -34,7 +34,6 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
     <link href="../../assets/template/sbadmin2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="../../assets/template/sbadmin2/css/sb-admin-2.min.css" rel="stylesheet">
-    
     <link href="../../assets/css/admin.css" rel="stylesheet"> 
 </head>
 
@@ -47,34 +46,44 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                 <div class="sidebar-brand-text mx-3">Admin D'Bubuy</div>
             </a>
             <hr class="sidebar-divider my-0">
+            
             <li class="nav-item active">
                 <a class="nav-link" href="index_admin.php"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a>
             </li>
+            
             <hr class="sidebar-divider">
             <div class="sidebar-heading">Menu Toko</div>
+            
             <li class="nav-item">
                 <a class="nav-link" href="../produk/produk.php"><i class="fas fa-fw fa-box"></i> <span>Kelola Produk</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="pesanan.php"><i class="fas fa-fw fa-shopping-cart"></i> <span>Pesanan</span></a>
+                <a class="nav-link" href="../pesanan.php"><i class="fas fa-fw fa-shopping-cart"></i> <span>Pesanan</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="customer.php"><i class="fas fa-fw fa-users"></i> <span>Customer</span></a>
+                <a class="nav-link" href="../customer.php"><i class="fas fa-fw fa-users"></i> <span>Customer</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="media.php"><i class="fas fa-fw fa-newspaper"></i> <span>Liputan Media</span></a>
+                <a class="nav-link" href="../media.php"><i class="fas fa-fw fa-newspaper"></i> <span>Liputan Media</span></a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="../histori/histori.php">
+                    <i class="fas fa-fw fa-history"></i> 
+                    <span>Histori</span>
+                </a>
+            </li>
+
             <hr class="sidebar-divider d-none d-md-block">
             <div class="text-center d-none d-md-inline"><button class="rounded-circle border-0" id="sidebarToggle"></button></div>
         </ul>
-
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"><i class="fa fa-bars"></i></button>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" kategori="button" data-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrator</span>
                                 <img class="img-profile rounded-circle" src="../../assets/template/sbadmin2/img/undraw_profile.svg">
                             </a>
@@ -160,6 +169,7 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                                                 <?php
                                                 $q_p = mysqli_query($koneksi, "SELECT * FROM products ORDER BY id DESC LIMIT 3");
                                                 while($p = mysqli_fetch_assoc($q_p)){
+                                                    // Path Gambar: Mundur 2 level ke root
                                                     $img = "../../" . $p['image']; 
                                                 ?>
                                                 <tr>
@@ -167,8 +177,8 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                                                     <td><?= $p['name']; ?></td>
                                                     <td>Rp <?= number_format($p['price'],0,',','.'); ?></td>
                                                     <td>
-                                                        <a href="..\produk\edit_produk.php?id=<?= $p['id']; ?>" class="btn btn-warning btn-sm btn-circle"><i class="fas fa-pen"></i></a>
-                                                        <a href="..\produk\hapus_produk.php?id=<?= $p['id']; ?>" class="btn btn-danger btn-sm btn-circle" onclick="return confirm('Hapus?')"><i class="fas fa-trash"></i></a>
+                                                        <a href="../produk/edit_produk.php?id=<?= $p['id']; ?>" class="btn btn-warning btn-sm btn-circle"><i class="fas fa-pen"></i></a>
+                                                        <a href="../produk/hapus_produk.php?id=<?= $p['id']; ?>" class="btn btn-danger btn-sm btn-circle" onclick="return confirm('Hapus?')"><i class="fas fa-trash"></i></a>
                                                     </td>
                                                 </tr>
                                                 <?php } ?>
@@ -183,7 +193,7 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                                     <h6 class="m-0 font-weight-bold text-primary">Liputan Media</h6>
-                                    <a href="tambah_media.php" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Tambah</a>
+                                    <a href="../tambah_media.php" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Tambah</a>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -191,7 +201,6 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                                             <thead><tr><th>Logo</th><th>Media</th><th>Aksi</th></tr></thead>
                                             <tbody>
                                                 <?php
-                                                // Query tabel 'liputan'
                                                 $q_m = mysqli_query($koneksi, "SELECT * FROM liputan ORDER BY id DESC LIMIT 3");
                                                 while($m = mysqli_fetch_assoc($q_m)){
                                                     $img_m = "../../" . $m['image'];
@@ -203,7 +212,7 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                                                         <a href="<?= $m['link_url']; ?>" target="_blank" class="small">Lihat Link</a>
                                                     </td>
                                                     <td>
-                                                        <a href="hapus_media.php?id=<?= $m['id']; ?>" class="btn btn-danger btn-sm btn-circle" onclick="return confirm('Hapus?')"><i class="fas fa-trash"></i></a>
+                                                        <a href="../hapus_media.php?id=<?= $m['id']; ?>" class="btn btn-danger btn-sm btn-circle" onclick="return confirm('Hapus?')"><i class="fas fa-trash"></i></a>
                                                     </td>
                                                 </tr>
                                                 <?php } ?>

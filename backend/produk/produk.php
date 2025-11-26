@@ -25,20 +25,20 @@ if (!$koneksi) { die("Koneksi Gagal: " . mysqli_connect_error()); }
     <div id="wrapper">
 
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index_admin.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="..\admin\index_admin.php">
                 <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-utensils"></i></div>
                 <div class="sidebar-brand-text mx-3">Admin D'Bubuy</div>
             </a>
             <hr class="sidebar-divider my-0">
             <li class="nav-item">
-                <a class="nav-link" href="index_admin.php"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a>
+                <a class="nav-link" href="..\admin\index_admin.php"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a>
             </li>
             <hr class="sidebar-divider">
             <div class="sidebar-heading">Menu Toko</div>
             <li class="nav-item active">
                 <a class="nav-link" href="produk.php"><i class="fas fa-fw fa-box"></i> <span>Kelola Produk</span></a>
             </li>
-            
+
             <li class="nav-item">
                 <a class="nav-link" href="pesanan.php"><i class="fas fa-fw fa-shopping-cart"></i> <span>Pesanan</span></a>
             </li>
