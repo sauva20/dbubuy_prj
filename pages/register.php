@@ -59,4 +59,4 @@
         <div class="right-panel">
             <div class="top-circle-decoration"></div>
 
-            <h1 class="right-title">LOGIN ACCOUNT</h1> <div class="image-
+            <h1 class="right-title">REGISTER ACCOUNT</h1> <div class="image-
