@@ -1,0 +1,404 @@
+/* Warna Utama */
+:root {
+    --color-dark-brown: #5c453c; /* Coklat Gelap */
+    --color-medium-brown: #a68c7e; /* Coklat Sedang untuk card */
+    --color-white: #ffffff;
+    --color-text-dark: #333333;
+    --color-text-light: #f0f0f0;
+    --color-text-accent: #7a5848; /* Warna teks harga/kontras */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-dark-brown); /* Latar belakang body utama */
+    font-family: Arial, sans-serif;
+}
+
+.booking-wrapper {
+    position: relative;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.header {
+    color: var(--color-white);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+.main-content {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--color-white);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Panel Kiri (Formulir & Detail) --- */
+.left-panel {
+    flex: 0 0 60%; /* Sekitar 60% lebar */
+    background-color: var(--color-white);
+    padding: 30px 40px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+}
+
+/* Header Restoran */
+.restaurant-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.logo-box {
+    display: flex;
+    align-items: flex-start;
+}
+
+.logo-img {
+    width: 40px; 
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    font-weight: bold;
+}
+
+.logo-year {
+    font-size: 0.7rem;
+    color: var(--color-text-dark);
+}
+
+.logo-name {
+    font-size: 1.5rem;
+    color: var(--color-text-dark);
+    margin-top: -5px;
+}
+
+.logo-tagline {
+    font-size: 0.9rem;
+    color: var(--color-dark-brown);
+}
+
+/* Card Makanan */
+.food-card {
+    display: flex;
+    background-color: var(--color-medium-brown);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+    align-items: center;
+    position: relative;
+    color: var(--color-text-light); /* Teks di card menjadi putih/terang */
+}
+
+.food-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.food-info-right {
+    flex-grow: 1;
+}
+
+.food-name {
+    font-size: 1.2rem;
+    margin: 0 0 5px 0;
+    color: var(--color-white);
+}
+
+.food-price {
+    font-size: 0.9rem;
+    margin: 0 0 10px 0;
+    font-weight: 500;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+}
+
+.qty-btn {
+    background: none;
+    border: none;
+    color: var(--color-white);
+    font-size: 1.2rem;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.qty-display {
+    padding: 0 5px;
+    font-weight: bold;
+}
+
+.food-total-price {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-white);
+}
+
+/* Formulir Input */
+.form-group {
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--color-text-dark);
+    margin-bottom: 5px;
+}
+
+.custom-input, .custom-dropdown {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    font-size: 1rem;
+    outline: none;
+    color: var(--color-text-accent);
+}
+
+.custom-input::placeholder {
+    color: #aaa;
+}
+
+.custom-dropdown {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: none;
+    cursor: pointer;
+}
+
+.dropdown-group {
+    position: relative;
+}
+
+.dropdown-arrow {
+    position: absolute;
+    right: 0;
+    bottom: 15px;
+    pointer-events: none;
+    color: #555;
+    font-style: normal;
+}
+
+.custom-textarea {
+    width: 100%;
+    height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+/* Elemen Melengkung Latar Belakang Kiri Bawah */
+.curved-bg-left-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60%; 
+    height: 150px;
+    background-color: var(--color-dark-brown);
+    border-top-right-radius: 100% 100%; /* Melengkung ke dalam */
+    transform: translateY(50%); /* Pindahkan sebagian ke bawah */
+    z-index: 1;
+}
+
+/* --- Panel Kanan (Pembayaran & Total) --- */
+.right-panel {
+    flex: 0 0 40%;
+    background-color: var(--color-white);
+    padding: 30px 40px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    z-index: 3; 
+}
+
+.right-panel-inner {
+    z-index: 5;
+    position: relative;
+}
+
+.right-food-image-wrapper {
+    position: relative;
+    margin-bottom: 30px;
+    padding-top: 50px;
+}
+
+.right-food-image {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    border-radius: 50%; /* Membulat */
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    z-index: 6;
+    position: relative;
+}
+
+.food-title-overlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--color-text-dark);
+}
+
+/* Elemen Melengkung Kanan Atas */
+.curved-bg-right {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background-color: var(--color-dark-brown);
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+/* Metode Pembayaran */
+.payment-methods {
+    margin-bottom: 30px;
+}
+
+.payment-methods h4 {
+    color: var(--color-text-dark);
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.method-section h5 {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 10px 0 5px 0;
+}
+
+.bank-logos, .wallet-logos {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.logo-placeholder {
+    padding: 2px 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* Rincian Pesanan */
+.order-details {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    margin-bottom: 30px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    font-size: 0.95rem;
+}
+
+.detail-row.header-row {
+    color: var(--color-text-dark);
+    font-weight: bold;
+}
+
+.detail-row.total-row {
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+    padding-top: 10px;
+    font-weight: bold;
+    color: var(--color-text-accent);
+}
+
+/* Total Keseluruhan */
+.grand-total {
+    text-align: right;
+    margin-bottom: 30px;
+}
+
+.total-label {
+    font-size: 1.2rem;
+    color: var(--color-text-dark);
+    margin: 0 0 5px 0;
+    font-weight: bold;
+}
+
+.total-amount {
+    font-size: 1.8rem;
+    color: var(--color-text-accent);
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Tombol Buat Pesanan */
+.btn-create-order {
+    width: 100%;
+    background-color: var(--color-dark-brown);
+    color: var(--color-white);
+    border: none;
+    padding: 15px 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+}
+
+.btn-create-order:hover {
+    background-color: #4b3731;
+}
+
+/* Media Queries untuk responsif (opsional, tapi disarankan) */
+@media (max-width: 992px) {
+    .main-content {
+        flex-direction: column;
+    }
+
+    .left-panel, .right-panel {
+        flex: 1 1 100%;
+        padding: 30px;
+    }
+    
+    .curved-bg-left-bottom {
+        display: none; /* Sembunyikan elemen melengkung yang mengganggu di mobile */
+    }
+    .right-panel {
+        margin-top: 20px;
+    }
+}

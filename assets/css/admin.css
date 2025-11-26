@@ -1,0 +1,71 @@
+/* ============================================================
+   CUSTOM ADMIN THEME - D'BUBUY MA'ATIK (BROWN EDITION)
+   ============================================================ */
+
+:root {
+    --bubuy-brown: #3E2723;       /* Coklat Tua Utama */
+    --bubuy-brown-dark: #251614;  /* Coklat Lebih Gelap (untuk gradasi) */
+    --bubuy-accent: #e43c5c;      /* Merah Aksen */
+    --bubuy-gold: #dcbfa4;        /* Krem/Emas */
+}
+
+/* 1. UBAH SIDEBAR (Menu Kiri) */
+.bg-gradient-primary {
+    background-color: var(--bubuy-brown) !important;
+    background-image: linear-gradient(180deg, var(--bubuy-brown) 10%, var(--bubuy-brown-dark) 100%) !important;
+    background-size: cover !important;
+}
+
+/* 2. UBAH WARNA TEKS PRIMARY (Judul & Link) */
+.text-primary {
+    color: var(--bubuy-brown) !important;
+}
+
+a.text-primary:hover {
+    color: var(--bubuy-accent) !important;
+}
+
+/* 3. UBAH TOMBOL PRIMARY (Biru jadi Coklat) */
+.btn-primary {
+    background-color: var(--bubuy-brown) !important;
+    border-color: var(--bubuy-brown) !important;
+    color: #fff !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--bubuy-brown-dark) !important;
+    border-color: var(--bubuy-brown-dark) !important;
+}
+
+/* 4. UBAH BORDER KARTU STATISTIK */
+.border-left-primary {
+    border-left: 0.25rem solid var(--bubuy-brown) !important;
+}
+
+/* 5. PAGINATION (Nomor Halaman Tabel) */
+.page-item.active .page-link {
+    background-color: var(--bubuy-brown) !important;
+    border-color: var(--bubuy-brown) !important;
+}
+
+/* 6. CSS TAMBAHAN UNTUK GAMBAR (Agar rapi) */
+.img-thumb { 
+    width: 50px; 
+    height: 50px; 
+    object-fit: cover; 
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.img-media { 
+    width: 80px; 
+    height: 40px; 
+    object-fit: contain; 
+}
+
+/* 7. HEADER TABEL */
+.table thead th {
+    background-color: var(--bubuy-brown);
+    color: #ffffff;
+    border-color: var(--bubuy-brown);
+}

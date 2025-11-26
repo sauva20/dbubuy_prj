@@ -1,0 +1,203 @@
+
+    
+        /* --- CSS RESET & BASIC --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden; /* Mencegah scroll jika tidak perlu */
+        }
+
+        .register-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* --- PANEL KIRI (FORM) --- */
+        .left-panel {
+            flex: 1;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px 60px;
+            position: relative;
+        }
+
+        .page-title-top {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group label span {
+            color: red;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #888; /* Border agak tebal seperti gambar */
+            border-radius: 4px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #3b2a26;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+        }
+
+        .forgot-link {
+            color: #333;
+            text-decoration: underline;
+        }
+
+        .btn-register {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 200px; /* Lebar tombol terbatas */
+            font-weight: 700;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+
+        .btn-register:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+        }
+
+        /* Dekorasi Lengkungan Cokelat di Kiri Bawah */
+        .bottom-curve {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30vh;
+            height: 30vh;
+            background-color: #3b2a26;
+            border-top-right-radius: 100%;
+            z-index: 1;
+        }
+
+        /* --- PANEL KANAN (GAMBAR) --- */
+        .right-panel {
+            flex: 1;
+            background-color: #3b2a26; /* Warna Cokelat Gelap */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            color: white;
+        }
+
+        /* Dekorasi Lingkaran di Kanan Atas */
+        .top-circle-decoration {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .top-circle-decoration::after {
+             content: '';
+             position: absolute;
+             top: 40px;
+             left: 40px;
+             width: 100%;
+             height: 100%;
+             background-color: #fff;
+             border-radius: 50%;
+             opacity: 0.9;
+        }
+
+        .right-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .image-box {
+            background-color: white;
+            border-radius: 20px;
+            padding: 20px;
+            width: 350px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .image-box img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .login-link-text {
+            font-size: 1rem;
+        }
+
+        .login-link-text a {
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+            .register-wrapper {
+                flex-direction: column-reverse; /* Form di bawah, Gambar di atas */
+                height: auto;
+                overflow-y: auto;
+            }
+            .left-panel {
+                padding: 40px 20px;
+            }
+            .right-panel {
+                padding: 40px 20px;
+                min-height: 300px;
+            }
+            .bottom-curve {
+                display: none; /* Hilangkan dekorasi di mobile */
+            }
+            .btn-register {
+                width: 100%;
+            }
+        }

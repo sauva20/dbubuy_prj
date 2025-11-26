@@ -1,0 +1,65 @@
+/* Mengatur warna dasar halaman */
+body {
+  background-color: #f8f9fa; /* Warna abu-abu muda */
+  overflow-x: hidden; /* Mencegah scroll horizontal */
+}
+
+/* Mengatur wrapper utama */
+#wrapper {
+  display: flex;
+}
+
+/* ===== 1. SIDEBAR ===== */
+#sidebar-wrapper {
+  min-height: 100vh; /* Tinggi 100% layar */
+  width: 260px;
+  
+  /* Sidebar menempel di kiri saat di-scroll */
+  position: sticky;
+  top: 0;
+  
+  /* Transisi (jika nanti pakai JS untuk toggle) */
+  transition: margin 0.25s ease-out;
+}
+
+/* Styling item menu di sidebar */
+.list-group-item {
+  border: none;
+  padding: 1rem 1.5rem;
+}
+
+.list-group-item.active {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+  color: white;
+}
+
+.list-group-item-action:hover {
+  background-color: #4a4a4a;
+  color: white;
+}
+
+/* ===== 2. PAGE CONTENT (KONTEN + NAVBAR ATAS) ===== */
+#page-content-wrapper {
+  flex: 1; /* Mengisi sisa ruang */
+  min-width: 100vw; /* Lebar minimum */
+  display: flex;
+  flex-direction: column; /* Menyusun Navbar di atas Konten */
+}
+
+/* Mengatur agar layout tetap rapi */
+@media (min-width: 768px) {
+  #sidebar-wrapper {
+    margin-left: 0;
+  }
+  
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* Ini akan aktif jika sidebar-nya di-toggle (pakai JS) */
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -260px;
+  }
+}
