@@ -183,8 +183,7 @@ include 'config/koneksi.php';
 
           <div class="col-lg-6">
             <div class="map-container" data-aos="fade-up" data-aos-delay="500" style="border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.203677169194!2d107.75976937418487!3d-6.561245663916245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e693b61c5555555%3A0x4b7b5c5c5c5c5c5c!2sSubang!5e0!3m2!1sen!2sid!4v1690000000000!5m2!1sen!2sid" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>
+             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.646630943941!2d107.75558717553719!3d-6.566207993427083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e693c9c80847707%3A0xe99d603dc2ca2194!2sD&#39;Bubuy%20Ma%20Atik!5e0!3m2!1sen!2sid!4v1764596308576!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> 
           </div>
 
         </div>
