@@ -2,6 +2,24 @@
 session_start();
 include '../config/koneksi.php';
 
+
+
+// ... setelah query user berhasil diambil ($row) ...
+
+// CEK STATUS BANNED
+if ($row['is_banned'] == 1) {
+    echo "<script>
+            alert('Akun Anda telah DIBLOKIR karena pelanggaran. Silakan hubungi Admin.');
+            window.location='../pages/login.php';
+          </script>";
+    exit; // Stop proses login
+}
+
+// ... baru lanjut verifikasi password ...
+if (password_verify($password, $row['password'])) {
+    // ... proses login sukses ...
+}
+
 // Pastikan tombol login ditekan
 if (isset($_POST['action']) && $_POST['action'] == 'login') {
 

@@ -1,24 +1,19 @@
 <?php
 session_start();
-
 // Koneksi Database
 $koneksi = mysqli_connect("localhost", "root", "", "si_gudang");
 
-if (!$koneksi) {
-    die("Gagal Konek: " . mysqli_connect_error());
-}
+if (!$koneksi) { die("Gagal Konek: " . mysqli_connect_error()); }
 
-// Hitung Produk
+// --- LOGIC HITUNG DATA (Sama seperti sebelumnya) ---
 $total_produk = 0;
 $q_prod = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM products");
 if ($q_prod) { $d = mysqli_fetch_assoc($q_prod); $total_produk = $d['total']; }
 
-// Hitung Customer
 $total_customer = 0;
 $q_cust = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM users WHERE kategori='customer'");
 if ($q_cust) { $d = mysqli_fetch_assoc($q_cust); $total_customer = $d['total']; }
 
-// Hitung Liputan
 $total_media = 0;
 $q_media = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM liputan");
 if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
@@ -40,59 +35,12 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
 <body id="page-top">
     <div id="wrapper">
         
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index_admin.php">
-                <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-utensils"></i></div>
-                <div class="sidebar-brand-text mx-3">Admin D'Bubuy</div>
-            </a>
-            <hr class="sidebar-divider my-0">
-            
-            <li class="nav-item active">
-                <a class="nav-link" href="index_admin.php"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a>
-            </li>
-            
-            <hr class="sidebar-divider">
-            <div class="sidebar-heading">Menu Toko</div>
-            
-            <li class="nav-item">
-                <a class="nav-link" href="../produk/produk.php"><i class="fas fa-fw fa-box"></i> <span>Kelola Produk</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../pesanan.php"><i class="fas fa-fw fa-shopping-cart"></i> <span>Pesanan</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../customer.php"><i class="fas fa-fw fa-users"></i> <span>Customer</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../media.php"><i class="fas fa-fw fa-newspaper"></i> <span>Liputan Media</span></a>
-            </li>
+        <?php include 'partials/sidebar.php'; ?>
 
-            <li class="nav-item">
-                <a class="nav-link" href="../histori/histori.php">
-                    <i class="fas fa-fw fa-history"></i> 
-                    <span>Histori</span>
-                </a>
-            </li>
-
-            <hr class="sidebar-divider d-none d-md-block">
-            <div class="text-center d-none d-md-inline"><button class="rounded-circle border-0" id="sidebarToggle"></button></div>
-        </ul>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"><i class="fa fa-bars"></i></button>
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrator</span>
-                                <img class="img-profile rounded-circle" src="../../assets/template/sbadmin2/img/undraw_profile.svg">
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
-                                <a class="dropdown-item" href="../../action/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout</a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
+                
+                <?php include 'partials/topbar.php'; ?>
 
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -113,6 +61,7 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
@@ -126,6 +75,7 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
@@ -139,6 +89,7 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
@@ -155,7 +106,7 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-6 mb-4">
+                         <div class="col-lg-6 mb-4">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                                     <h6 class="m-0 font-weight-bold text-primary">Produk Terbaru</h6>
@@ -169,16 +120,14 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                                                 <?php
                                                 $q_p = mysqli_query($koneksi, "SELECT * FROM products ORDER BY id DESC LIMIT 3");
                                                 while($p = mysqli_fetch_assoc($q_p)){
-                                                    // Path Gambar: Mundur 2 level ke root
                                                     $img = "../../" . $p['image']; 
                                                 ?>
                                                 <tr>
-                                                    <td><img src="<?= $img; ?>" class="img-thumb"></td>
+                                                    <td><img src="<?= $img; ?>" class="img-thumb" style="width:50px;"></td>
                                                     <td><?= $p['name']; ?></td>
                                                     <td>Rp <?= number_format($p['price'],0,',','.'); ?></td>
                                                     <td>
                                                         <a href="../produk/edit_produk.php?id=<?= $p['id']; ?>" class="btn btn-warning btn-sm btn-circle"><i class="fas fa-pen"></i></a>
-                                                        <a href="../produk/hapus_produk.php?id=<?= $p['id']; ?>" class="btn btn-danger btn-sm btn-circle" onclick="return confirm('Hapus?')"><i class="fas fa-trash"></i></a>
                                                     </td>
                                                 </tr>
                                                 <?php } ?>
@@ -198,7 +147,7 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
-                                            <thead><tr><th>Logo</th><th>Media</th><th>Aksi</th></tr></thead>
+                                            <thead><tr><th>Logo</th><th>Media</th></tr></thead>
                                             <tbody>
                                                 <?php
                                                 $q_m = mysqli_query($koneksi, "SELECT * FROM liputan ORDER BY id DESC LIMIT 3");
@@ -206,14 +155,8 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                                                     $img_m = "../../" . $m['image'];
                                                 ?>
                                                 <tr>
-                                                    <td class="text-center"><img src="<?= $img_m; ?>" class="img-media"></td>
-                                                    <td>
-                                                        <strong><?= $m['media_name']; ?></strong><br>
-                                                        <a href="<?= $m['link_url']; ?>" target="_blank" class="small">Lihat Link</a>
-                                                    </td>
-                                                    <td>
-                                                        <a href="../hapus_media.php?id=<?= $m['id']; ?>" class="btn btn-danger btn-sm btn-circle" onclick="return confirm('Hapus?')"><i class="fas fa-trash"></i></a>
-                                                    </td>
+                                                    <td class="text-center"><img src="<?= $img_m; ?>" class="img-media" style="height:30px;"></td>
+                                                    <td><?= $m['media_name']; ?></td>
                                                 </tr>
                                                 <?php } ?>
                                             </tbody>
@@ -222,10 +165,12 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                 </div>
             </div>
+            
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto"><span>Copyright &copy; D'Bubuy 2025</span></div>

@@ -2104,3 +2104,36 @@ section,
   color: #3E2723 !important;     /* Teks jadi coklat */
   text-decoration: none;
 }
+
+/* Navbar Baru */
+
+
+  /* Wrapper untuk icon dan badge agar menyatu */
+  .cart-icon-wrap {
+      position: relative !important; /* Kunci posisi */
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      margin-right: 15px; /* Jarak ke teks Halo user */
+  }
+
+  /* Ikon keranjang */
+  .cart-icon-wrap i {
+      font-size: 1.4rem; /* Ukuran icon */
+      color: #333; /* Warna icon (sesuaikan jika perlu) */
+  }
+
+  /* Badge angka */
+  .cart-badge-custom {
+      position: absolute;
+      top: -5px;    /* Atur ketinggian badge */
+      right: -8px;  /* Atur posisi samping badge */
+      font-size: 0.65rem;
+      padding: 3px 6px;
+      border-radius: 50%;
+      background-color: #dc3545; /* Merah */
+      color: white;
+      line-height: 1;
+      border: 2px solid #fff; /* Border putih agar terlihat terpisah dari icon */
+  }
