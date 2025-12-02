@@ -17,15 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $alamat = $_POST['alamat'];
     
-    // PERBAIKAN 1: Logika ambil nomor WA (Manual atau Terdaftar)
+    // Logika ambil nomor WA (Manual atau Terdaftar)
     // Hapus tanda $ di dalam kurung siku $_POST
     $no_whatsapp = !empty($_POST['phone_manual']) ? $_POST['phone_manual'] : $_POST['phone_registered'];
 
     // Buat Order ID Unik
     $order_id = 'ORD-' . time() . '-' . rand(100,999);
     
-    // 2. Hitung Total & Siapkan Item Details untuk Midtrans
-    // JANGAN INPUT KE DATABASE DI SINI (Nanti Error Foreign Key)
+    // Hitung Total & Siapkan Item Details untuk Midtrans
     $total_amount = 0;
     $item_details = [];
     
@@ -41,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
     }
 
-    // 3. Siapkan Parameter Snap Midtrans
+    // Parameter Snap Midtrans
     $transaction_details = [
         'order_id' => $order_id,
         'gross_amount' => $total_amount,
@@ -62,18 +61,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ];
 
     try {
-        // 4. Minta Snap Token
+        // Minta Snap Token
         $snapToken = Snap::getSnapToken($params);
 
-        // 5. Simpan Order ke Database Utama (TABEL ORDERS) - LAKUKAN INI DULUAN
-        // PERBAIKAN: Nama kolom di database adalah 'customer_phone', bukan 'customer_$no_whatsapp'
+        // Simpan Order ke Database Utama (TABEL ORDERS) 
         $query_order = "INSERT INTO orders (id, customer_name, customer_email, customer_phone, customer_address, total_amount, status, snap_token) 
                         VALUES ('$order_id', '$nama', '$email', '$no_whatsapp', '$alamat', '$total_amount', 'pending', '$snapToken')";
         
         if (mysqli_query($koneksi, $query_order)) {
             
-            // 6. BARU Simpan Item ke Database (TABEL ORDER_ITEMS)
-            // Sekarang aman karena Order ID sudah ada di tabel orders
+            // Simpan Item ke Database (TABEL ORDER_ITEMS)
             foreach ($_SESSION['cart'] as $id_produk => $item) {
                 $q_item = "INSERT INTO order_items (order_id, product_id, product_name, price, quantity) 
                            VALUES ('$order_id', '$id_produk', '{$item['name']}', '{$item['price']}', '{$item['qty']}')";
@@ -84,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             unset($_SESSION['cart']);
             
             // Redirect ke halaman detail order
-            // Pastikan path header benar (karena file ini ada di folder action, maka naik satu level ../)
             header("Location: ../pages/order_detail.php?id=$order_id");
             exit;
 

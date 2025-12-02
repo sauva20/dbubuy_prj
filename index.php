@@ -3,7 +3,16 @@ session_start();
 // Koneksi DB
 include 'config/koneksi.php';
 
-// --- BAGIAN 1: OOP Cart Logic ---
+// --- BAGIAN 1: Helper Functions & Classes ---
+
+// Fungsi Ambil ID Youtube dari Link
+function getYoutubeID($url) {
+    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match);
+    return isset($match[1]) ? $match[1] : null;
+}
+
+// Class Keranjang Belanja
+// (cart) menggunakan histori browser n/ db
 class CartService {
     public function __construct() {
         if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
@@ -20,6 +29,9 @@ class CartService {
             ];
         }
     }
+    // isset mengisi
+    // unset menarik
+    
     public function removeFromCart($id) {
         if (isset($_SESSION['cart'][$id])) unset($_SESSION['cart'][$id]);
     }
@@ -34,30 +46,43 @@ class CartService {
         foreach ($_SESSION['cart'] as $item) {
             $total += $item['price'] * $item['qty'];
         }
-        return $total;
+        return $total; // 2 operasi
     }
 }
 
 $cart = new CartService();
 
-// Handle Form Post
+// Variable Penanda Login (Default false)
+$wajib_login = false;
+
+// --- BAGIAN 2: Handle Form Post ---
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+    // LOGIC TAMBAH KERANJANG
     if (isset($_POST['act_add'])) {
-        $cart->addToCart($_POST['id'], $_POST['name'], $_POST['price'], $_POST['image']);
-        header("Location: index.php?status=added#features"); 
-        exit;
+        // Cek Login Dulu
+        if (!isset($_SESSION['is_login']) || $_SESSION['is_login'] !== true) {
+            $wajib_login = true; // Trigger SweetAlert di bawah
+        } 
+        else {
+            // Jika Login Aman, Masuk Keranjang
+            $cart->addToCart($_POST['id'], $_POST['name'], $_POST['price'], $_POST['image']);
+            header("Location: index.php?status=added#features"); 
+            exit;
+        }
     }
+
+    // LOGIC HAPUS ITEM
     if (isset($_POST['act_remove'])) {
         $cart->removeFromCart($_POST['id']);
         header("Location: index.php");
         exit;
     }
 }
-// --- END OOP Logic ---
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
   <meta charset="utf-8">
@@ -66,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -75,10 +101,105 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
   <link href="assets/css/main.css" rel="stylesheet">
   
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <style>
+      /* Efek Klik Tombol */
       .btn-active-effect:active { transform: scale(0.95); }
+
+      /* --- NETFLIX STYLE HOVER CARD CSS --- */
+      .media-container {
+          position: relative;
+          padding: 10px;
+      }
+
+      /* Item Utama (Logo) */
+      .media-logo-box {
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+          padding: 20px;
+          height: 150px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid #eee;
+          transition: 0.3s;
+          cursor: pointer;
+      }
+
+      .media-logo-box img {
+          max-height: 80px;
+          max-width: 100%;
+          object-fit: contain;
+          filter: grayscale(100%);
+          transition: 0.3s;
+      }
+
+      /* Saat Hover Logo */
+      .media-container:hover .media-logo-box img {
+          filter: grayscale(0%);
+      }
+
+      /* --- THE POPUP CARD (Hidden by default) --- */
+      .media-popup-card {
+          display: none;
+          position: absolute;
+          top: -30%; 
+          left: -10%;
+          width: 120%;
+          background-color: #141414; /* Hitam Netflix */
+          color: #fff;
+          border-radius: 10px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+          z-index: 999;
+          overflow: hidden;
+          animation: popUp 0.3s forwards;
+      }
+
+      @keyframes popUp {
+          0% { opacity: 0; transform: scale(0.8); }
+          100% { opacity: 1; transform: scale(1); }
+      }
+
+      /* Video Wrapper */
+      .popup-video {
+          position: relative;
+          width: 100%;
+          height: 180px;
+          background: #000;
+      }
+
+      .popup-video iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
+      }
+
+      /* Info Text */
+      .popup-info { padding: 15px; }
+      .popup-info h5 { font-size: 16px; font-weight: 700; margin-bottom: 5px; color: #e50914; }
+      .popup-info p { font-size: 11px; color: #b3b3b3; line-height: 1.4; margin-bottom: 10px; }
+
+      .btn-visit {
+          background-color: #fff;
+          color: #000;
+          padding: 5px 15px;
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: bold;
+          text-decoration: none;
+          display: flex; align-items: center; gap: 5px;
+      }
+      .btn-visit:hover { background-color: #e6e6e6; }
+
+      /* Trigger Hover Logic */
+      .media-container:hover .media-popup-card {
+          display: block;
+      }
   </style>
 </head>
 
@@ -141,7 +262,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   <div class="d-flex mt-3 gap-2 align-items-center">
                       <a href="<?= $wa; ?>" target="_blank" class="btn text-white flex-grow-1 d-flex align-items-center justify-content-center btn-active-effect" 
                          style="background-color: #e43c5c; height: 42px; border-radius: 50px; border: none; font-weight: 500;">
-                          Booking WA
+                          Tanya Kami
                       </a>
                       
                       <form method="POST" style="margin: 0;">
@@ -172,6 +293,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <section id="liputan-media" class="services section light-background">
       <div class="container section-title" data-aos="fade-up">
         <h2>Liputan Media</h2>
+        <p>Sorotan media terhadap kelezatan D'Bubuy Ma'Atik</p>
       </div>
 
       <div class="container">
@@ -179,19 +301,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <?php
           if (isset($koneksi)) {
               $q_media = mysqli_query($koneksi, "SELECT * FROM liputan ORDER BY id DESC");
+              
               if (mysqli_num_rows($q_media) > 0) {
                   while ($m = mysqli_fetch_assoc($q_media)) { 
+                      // Ambil ID Youtube untuk Embed
+                      $yt_id = getYoutubeID($m['link_url']);
+                      $is_youtube = !empty($yt_id);
+                      $embed_src = "";
+                      
+                      // Link Embed: Autoplay, Mute, No Controls
+                      if ($is_youtube) {
+                          $embed_src = "https://www.youtube.com/embed/$yt_id?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0";
+                      }
           ?>
-            <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up">
-              <div class="service-item position-relative" style="width:100%;">
-                <div class="icon" style="display:flex; justify-content:center; margin-bottom:20px;">
-                    <img src="<?= $m['image']; ?>" style="height:50px; object-fit:contain;">
+            <div class="col-xl-3 col-md-6" data-aos="fade-up">
+              <div class="media-container">
+                
+                <div class="media-logo-box">
+                    <img src="<?= $m['image']; ?>" alt="<?= $m['media_name']; ?>">
                 </div>
-                <h4 class="text-center">
-                    <a href="<?= $m['link_url']; ?>" target="_blank" class="stretched-link"><?= $m['media_name']; ?></a>
-                </h4>
-                <p class="text-center text-muted"><?= substr($m['description'], 0, 90); ?>...</p>
-              </div>
+
+                <div class="media-popup-card">
+                    
+                    <div class="popup-video">
+                        <?php if($is_youtube): ?>
+                            <iframe data-src="<?= $embed_src ?>" allow="autoplay; encrypted-media"></iframe>
+                        <?php else: ?>
+                            <img src="<?= $m['image']; ?>" style="width:100%; height:100%; object-fit:cover; opacity:0.5;">
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="popup-info">
+                        <h5><?= $m['media_name']; ?></h5>
+                        <p><?= substr($m['description'], 0, 80); ?>...</p>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <a href="<?= $m['link_url']; ?>" target="_blank" class="btn-visit">
+                                <i class="bi bi-play-fill"></i> Tonton
+                            </a>
+                            <small class="text-muted" style="font-size:10px;">
+                                <?= $is_youtube ? 'YouTube' : 'Artikel'; ?>
+                            </small>
+                        </div>
+                    </div>
+
+                </div>
+                </div>
             </div>
           <?php 
                   }
@@ -285,7 +440,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
   </div>
 
-
   <footer id="footer" class="footer light-background">
     <div class="footer-top">
       <div class="container">
@@ -316,15 +470,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <div class="copyright text-center">
-      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
-        <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <div>© Copyright <strong><span>D'Bubuy Ma'Atik</span></strong>. All Rights Reserved</div>
-        </div>
-        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
-          <a href=""><i class="bi bi-instagram"></i></a>
-          <a href=""><i class="bi bi-whatsapp"></i></a>
-        </div>
-      </div>
+      <div class="container">© Copyright <strong><span>D'Bubuy Ma'Atik</span></strong>. All Rights Reserved</div>
     </div>
   </footer>
 
@@ -335,6 +481,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/js/main.js"></script>
+
+  <?php if($wajib_login): ?>
+  <script>
+      Swal.fire({
+          icon: 'warning',
+          title: 'Belum Login',
+          text: 'Silakan login terlebih dahulu untuk memesan!',
+          showCancelButton: true,
+          confirmButtonColor: '#ce1212',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: 'Login Sekarang',
+          cancelButtonText: 'Nanti Saja'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              window.location.href = 'pages/login.php';
+          }
+      });
+  </script>
+  <?php endif; ?>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const mediaContainers = document.querySelectorAll('.media-container');
+
+        mediaContainers.forEach(container => {
+            const iframe = container.querySelector('iframe');
+            
+            if (iframe) {
+                const videoSrc = iframe.getAttribute('data-src');
+
+                // Saat Mouse Masuk -> Pasang Link Video (Play)
+                container.addEventListener('mouseenter', () => {
+                    if(videoSrc) iframe.setAttribute('src', videoSrc);
+                });
+
+                // Saat Mouse Keluar -> Cabut Link Video (Stop/Reset)
+                container.addEventListener('mouseleave', () => {
+                    iframe.setAttribute('src', '');
+                });
+            }
+        });
+    });
+  </script>
 
 </body>
 </html>

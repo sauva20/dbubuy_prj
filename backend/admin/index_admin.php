@@ -6,6 +6,7 @@ $koneksi = mysqli_connect("localhost", "root", "", "si_gudang");
 if (!$koneksi) { die("Gagal Konek: " . mysqli_connect_error()); }
 
 // --- LOGIC HITUNG DATA (Sama seperti sebelumnya) ---
+// koneksi sql bukan dalam koneksi.php
 $total_produk = 0;
 $q_prod = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM products");
 if ($q_prod) { $d = mysqli_fetch_assoc($q_prod); $total_produk = $d['total']; }
@@ -19,6 +20,7 @@ $q_media = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM liputan");
 if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,14 +28,14 @@ if ($q_media) { $d = mysqli_fetch_assoc($q_media); $total_media = $d['total']; }
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Admin D'Bubuy - Dashboard</title>
 
-    <link href="../../assets/template/sbadmin2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/template/sbadmin2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link href="../../assets/template/sbadmin2/css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="../../assets/css/admin.css" rel="stylesheet"> 
+    <link href="/assets/template/sbadmin2/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/assets/css/admin.css" rel="stylesheet"> 
 </head>
 
 <body id="page-top">
-    <div id="wrapper">
+    <div id="wrapper"> <!--useles-->
         
         <?php include 'partials/sidebar.php'; ?>
 

@@ -2,15 +2,15 @@
 session_start();
 require_once '../config/koneksi.php';
 
-// 1. Cek Login
+// Cek Login
 if (empty($_SESSION['is_login'])) {
     header("Location: login.php");
     exit;
 }
 
-// 2. LOGIC PENGAMBILAN DATA USER (FIX ERROR)
+// LOGIC PENGAMBILAN DATA USER 
 $nama_sess = $_SESSION['nama'] ?? '';     // Ambil nama dari session
-$username_sess = $_SESSION['username'] ?? ''; // Ambil username dari session (jika ada)
+$username_sess = $_SESSION['username'] ?? ''; // Ambil username dari session 
 
 // Default variable user kosong
 $user = null;

@@ -76,7 +76,7 @@ $q_items = mysqli_query($koneksi, "SELECT * FROM order_items WHERE order_id = '$
             // Trigger Snap Popup
             window.snap.pay('<?= $order['snap_token'] ?>', {
               
-              // 1. KETIKA SUKSES
+              // KETIKA SUKSES
               onSuccess: function(result){
                 // Arahkan kembali ke halaman order_detail dengan status sukses
                 window.location.href = "order_detail.php?id=<?= $order_id ?>&status=success";

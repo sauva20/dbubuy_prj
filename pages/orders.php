@@ -2,13 +2,13 @@
 session_start();
 require_once '../config/koneksi.php';
 
-// 1. Cek Login
+// 1Cek Login
 if (empty($_SESSION['is_login'])) {
     header("Location: ../pages/login.php");
     exit;
 }
 
-// 2. Ambil Data User (Kita butuh No WA untuk mencocokkan pesanan)
+// Ambil Data User (Kita butuh No WA untuk mencocokkan pesanan)
 $username = $_SESSION['username'] ?? '';
 $nama_user = $_SESSION['nama'] ?? '';
 
@@ -21,8 +21,7 @@ if (!empty($username)) {
 $user = mysqli_fetch_assoc($q_user);
 $user_phone = $user['no_whatsapp'];
 
-// 3. Ambil Data Pesanan Berdasarkan No WA
-// Kita urutkan dari yang terbaru (DESC)
+// Ambil Data Pesanan Berdasarkan No WA
 $query_orders = mysqli_query($koneksi, "SELECT * FROM orders WHERE customer_phone = '$user_phone' ORDER BY created_at DESC");
 ?>
 

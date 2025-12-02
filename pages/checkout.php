@@ -2,13 +2,13 @@
 session_start();
 require_once '../config/koneksi.php';
 
-// 1. Cek Login & Keranjang
+// Cek Login & Keranjang
 if (empty($_SESSION['cart']) || empty($_SESSION['is_login'])) {
     header("Location: ../index.php");
     exit;
 }
 
-// 2. LOGIC DATA USER
+// LOGIC DATA USER
 $nama_user = $_SESSION['nama'] ?? '';
 $username  = $_SESSION['username'] ?? '';
 $user_data = [];
@@ -25,7 +25,7 @@ if (!empty($username)) {
 $val_nama = $user_data['nama_lengkap'] ?? $nama_user;
 $val_wa   = $user_data['no_whatsapp'] ?? '';
 
-// 3. Hitung total
+//  Hitung total
 $total = 0;
 foreach ($_SESSION['cart'] as $item) {
     $total += $item['price'] * $item['qty'];

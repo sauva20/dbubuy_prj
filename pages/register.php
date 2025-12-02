@@ -53,10 +53,10 @@
                 <button type="submit" class="btn-register">REGISTER</button>
             </form>
 
-            <div class="bottom-curve"></div>
+            <div class="bottom-curve"></div>   <!-- style lingkaran bawah kiri -->
         </div>
 
         <div class="right-panel">
             <div class="top-circle-decoration"></div>
-
+ 
             <h1 class="right-title">REGISTER ACCOUNT</h1> <div class="image-

@@ -28,13 +28,13 @@ if (isset($_POST['update'])) {
     if ($_FILES['foto']['name'] != "") {
         $nama_file   = $_FILES['foto']['name'];
         $tmp_file    = $_FILES['foto']['tmp_name'];
-        $nama_baru   = time() . "_" . $nama_file; // Rename biar unik
+        $nama_baru   = time() . "_" . $nama_file; // Rename 
         $path_upload = "../../assets/img/" . $nama_baru; // Path fisik
         $path_db     = "assets/img/" . $nama_baru;     // Path database
 
         // Upload foto baru
         if (move_uploaded_file($tmp_file, $path_upload)) {
-            // Hapus foto lama dari folder (Opsional, biar hemat storage)
+            // Hapus foto lama dari folder)
             if (file_exists("../../" . $foto_lama)) {
                 unlink("../../" . $foto_lama);
             }
