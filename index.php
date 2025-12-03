@@ -3,7 +3,7 @@ session_start();
 // Koneksi DB
 include 'config/koneksi.php';
 
-// --- BAGIAN 1: Helper Functions & Classes ---
+// Functions & Class 
 
 // Fungsi Ambil ID Youtube dari Link
 function getYoutubeID($url) {
@@ -209,12 +209,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   <main class="main">
 
+
+  <!-- code bootstrap -->
     <section id="hero" class="hero section">
       <div class="container">
         <div class="row gy-4">
           <div class="col-lg-7 order-2 order-lg-1 d-flex flex-column justify-content-center">
             <h1>Selamat Datang di D'Bubuy Ma'Atik</h1>
-            <p>Rasakan kenikmatan ayam kampung & entog yang dimasak tradisional dengan metode bubuy dalam sekam panas selama 8 jam.</p>
+            <p>Rasakan kenikmatan ayam kampung & entog yang dimasak tradisional dengan metode bubuy dalam sekam panas selama 8 jam.warisan Mamah Atik ini sudah sejak Bulan Februari 2014 dan baru memulai pemasaran bubuy ini pada Bulan April 2014. Awalnya kang Eenk memasarkan produknya dengan cara menawarkan ke teman-teman dekat saja. Kemudian, pemasaran D'Bubuy Ma Atik disebarkan via media sosial seperti Facebook dan Twitter serta tentu saja dari mulut ke mulut. Lambat laun karena kelezatannya, produk D'Bubuy Ma Atik semakin dikenal tidak hanya di Kabupaten Subang tapi juga meluas hingga ke berbagai daerah.
+</p>
             <div class="d-flex">
               <a href="#features" class="btn-get-started">Lihat Menu</a>
               <a href="https://youtu.be/VSCGS8gSJ2s" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Tonton Video</span></a>

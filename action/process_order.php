@@ -7,7 +7,7 @@ use Midtrans\Config;
 use Midtrans\Snap;
 
 // 1. Konfigurasi Midtrans
-Config::$serverKey = 'SB-Mid-server-F2bp1WB4iTLx00j-hFCWrx0t'; // Server Key Anda
+Config::$serverKey = 'SB-Mid-server-F2bp1WB4iTLx00j-hFCWrx0t'; // Server Key 
 Config::$isProduction = false;
 Config::$isSanitized = true;
 Config::$is3ds = true;

@@ -17,7 +17,7 @@
                 <a href="#" data-bs-toggle="modal" data-bs-target="#modalKeranjang" class="d-flex align-items-center">
                     <i class="bi bi-cart-fill" style="font-size: 1.2rem;"></i>
                     <?php 
-                    // Cek session cart (pastikan session_start ada di file induk)
+                    // Cek session cart 
                     $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
                     if($cartCount > 0): 
                     ?>
