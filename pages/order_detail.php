@@ -78,23 +78,23 @@ $q_items = mysqli_query($koneksi, "SELECT * FROM order_items WHERE order_id = '$
               
               // KETIKA SUKSES
               onSuccess: function(result){
-                // Arahkan kembali ke halaman order_detail dengan status sukses
-                window.location.href = "order_detail.php?id=<?= $order_id ?>&status=success";
+                // Arahan kembali ke halaman order_detail dengan status sukses
+                window.location.href = "orders.php?id=<?= $order_id ?>&status=success";
               },
               
-              // 2. KETIKA PENDING (Belum bayar tapi close)
+              // KETIKA PENDING (Belum bayar tapi close)
               onPending: function(result){
                 alert("Menunggu pembayaran!");
                 window.location.reload();
               },
               
-              // 3. KETIKA ERROR
+              // ERROR
               onError: function(result){
                 alert("Pembayaran gagal!");
                 window.location.reload();
               },
               
-              // 4. KETIKA DI-CLOSE TANPA BAYAR
+              // DI-CLOSE TANPA BAYAR
               onClose: function(){
                 alert('Anda menutup popup tanpa menyelesaikan pembayaran');
               }

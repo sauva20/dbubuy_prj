@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           padding: 10px;
       }
 
-      /* Item Utama (Logo) */
+      /* Item Utama  */
       .media-logo-box {
           background: #fff;
           border-radius: 8px;
@@ -242,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               if (mysqli_num_rows($q_prod) > 0) {
                   while ($p = mysqli_fetch_assoc($q_prod)) {
                       $rp = "Rp " . number_format($p['price'], 0, ',', '.');
-                      $wa = "https://wa.me/6281234567890?text=Halo%20saya%20mau%20pesan%20" . urlencode($p['name']);
+                      $wa = "https://wa.me/6287775733922?text=Halo%20saya%20mau%20tanya%20terkait%20" . urlencode($p['name']); //custom wa link
           ?>
             <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
               <div class="product-card">
