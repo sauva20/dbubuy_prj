@@ -9,6 +9,7 @@ if (!isset($_SESSION['is_login']) || $_SESSION['kategori'] != 'admin') {
 }
 
 // 2. Logic Toggle Banned (Ubah Status Blokir)
+// 2. Logic Toggle Banned (Ubah Status Blokir)
 if (isset($_GET['id_user']) && isset($_GET['set_ban'])) {
     $id_user = $_GET['id_user'];
     $status_baru = $_GET['set_ban']; // 1 untuk banned, 0 untuk unban
@@ -17,6 +18,11 @@ if (isset($_GET['id_user']) && isset($_GET['set_ban'])) {
     $q_update = "UPDATE users SET is_banned = '$status_baru' WHERE id = '$id_user' AND kategori = 'customer'";
     
     if (mysqli_query($koneksi, $q_update)) {
+        
+        // [BARU] CATAT LOG
+        $aksi_log = ($status_baru == 1) ? "Banned User" : "Unbanned User";
+        catat_log($koneksi, $aksi_log, "Mengubah status user ID: $id_user");
+
         $pesan = ($status_baru == 1) ? "User berhasil dibanned (diblokir)." : "User berhasil diaktifkan kembali.";
         echo "<script>alert('$pesan'); window.location='customer.php';</script>";
     }

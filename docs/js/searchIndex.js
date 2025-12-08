@@ -1,0 +1,54 @@
+Search.appendIndex(
+    [
+                {
+            "fqsen": "\\catat_log\u0028\u0029",
+            "name": "catat_log",
+            "summary": "",
+            "url": "namespaces/default.html#function_catat_log"
+        },                {
+            "fqsen": "\\getYoutubeID\u0028\u0029",
+            "name": "getYoutubeID",
+            "summary": "",
+            "url": "namespaces/default.html#function_getYoutubeID"
+        },                {
+            "fqsen": "\\CartService",
+            "name": "CartService",
+            "summary": "",
+            "url": "classes/CartService.html"
+        },                {
+            "fqsen": "\\CartService\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/CartService.html#method___construct"
+        },                {
+            "fqsen": "\\CartService\u003A\u003AaddToCart\u0028\u0029",
+            "name": "addToCart",
+            "summary": "",
+            "url": "classes/CartService.html#method_addToCart"
+        },                {
+            "fqsen": "\\CartService\u003A\u003AremoveFromCart\u0028\u0029",
+            "name": "removeFromCart",
+            "summary": "",
+            "url": "classes/CartService.html#method_removeFromCart"
+        },                {
+            "fqsen": "\\CartService\u003A\u003AgetCart\u0028\u0029",
+            "name": "getCart",
+            "summary": "",
+            "url": "classes/CartService.html#method_getCart"
+        },                {
+            "fqsen": "\\CartService\u003A\u003AcountItems\u0028\u0029",
+            "name": "countItems",
+            "summary": "",
+            "url": "classes/CartService.html#method_countItems"
+        },                {
+            "fqsen": "\\CartService\u003A\u003AgetTotal\u0028\u0029",
+            "name": "getTotal",
+            "summary": "",
+            "url": "classes/CartService.html#method_getTotal"
+        },                {
+            "fqsen": "\\",
+            "name": "\\",
+            "summary": "",
+            "url": "namespaces/default.html"
+        }            ]
+);

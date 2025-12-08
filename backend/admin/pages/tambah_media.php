@@ -215,7 +215,7 @@ if (isset($_POST['simpan'])) {
             oFReader.onload = function(oFREvent) {
                 imgPreview.src = oFREvent.target.result;
                 imgPreview.style.display = 'block'; // Tampilkan gambar
-                previewText.style.display = 'none'; // Sembunyikan teks "Preview Gambar"
+                prezzviewText.style.display = 'none'; // Sembunyikan teks "Preview Gambar"
             }
         }
     </script>

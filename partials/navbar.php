@@ -46,7 +46,7 @@
                 </li>
 
             <?php else: ?>
-                <li><a href="pages/login.php" class="btn-get-started" style="margin-left: 15px;">Login</a></li>
+                <li><a href="pages/auth.php" class="btn-get-started" style="margin-left: 15px;">Login</a></li>
             <?php endif; ?>
             </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>

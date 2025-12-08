@@ -9,12 +9,17 @@ if (!isset($_SESSION['is_login']) || $_SESSION['kategori'] != 'admin') {
 }
 
 // 2. Logic Update Status Pesanan
+// 2. Logic Update Status Pesanan
 if (isset($_POST['btn_update_status'])) {
     $order_id = $_POST['order_id'];
     $status_baru = $_POST['status'];
     
     $query_update = "UPDATE orders SET status = '$status_baru' WHERE id = '$order_id'";
     if (mysqli_query($koneksi, $query_update)) {
+        
+        // [BARU] CATAT LOG
+        catat_log($koneksi, "Update Status", "Mengubah status Order #$order_id menjadi $status_baru");
+
         echo "<script>alert('Status pesanan berhasil diperbarui!'); window.location='pesanan.php';</script>";
     } else {
         echo "<script>alert('Gagal update status.');</script>";

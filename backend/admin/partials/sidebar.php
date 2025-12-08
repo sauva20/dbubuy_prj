@@ -46,6 +46,13 @@
         </a>
     </li>
 
+        <li class="nav-item <?= (basename($_SERVER['PHP_SELF']) == 'histori.php') ? 'active' : '' ?>">
+        <a class="nav-link" href="pages/histori.php">
+            <i class="fas fa-fw fa-history"></i>
+            <span>Histori Aktivitas</span>
+        </a>
+    </li>
+
     <hr class="sidebar-divider d-none d-md-block">
 
     <div class="text-center d-none d-md-inline">

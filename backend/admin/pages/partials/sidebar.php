@@ -20,7 +20,8 @@
     <div class="sidebar-heading">Menu Toko</div>
 
     <li class="nav-item <?= (basename($_SERVER['PHP_SELF']) == 'produk.php') ? 'active' : '' ?>">
-        <a class="nav-link" href="produk.php"> <i class="fas fa-fw fa-box"></i>
+        <a class="nav-link" href="produk.php">
+            <i class="fas fa-fw fa-box"></i>
             <span>Kelola Produk</span>
         </a>
     </li>
@@ -43,6 +44,13 @@
         <a class="nav-link" href="media.php">
             <i class="fas fa-fw fa-newspaper"></i>
             <span>Liputan Media</span>
+        </a>
+    </li>
+
+    <li class="nav-item <?= (basename($_SERVER['PHP_SELF']) == 'histori.php') ? 'active' : '' ?>">
+        <a class="nav-link" href="histori.php">
+            <i class="fas fa-fw fa-history"></i>
+            <span>Histori Aktivitas</span>
         </a>
     </li>
 

@@ -26,6 +26,10 @@ if (isset($_POST['btn_simpan'])) {
         if (move_uploaded_file($foto_tmp, $tujuan)) {
             $query = "INSERT INTO liputan (media_name, description, image, link_url) VALUES ('$nama', '$deskripsi', '$db_path', '$link')";
             if (mysqli_query($koneksi, $query)) {
+                
+                // [HISTORI] CATAT LOG
+                if(function_exists('catat_log')) catat_log($koneksi, "Tambah Media", "Menambahkan media baru: $nama");
+
                 echo "<script>alert('Media berhasil ditambahkan!'); window.location='media.php';</script>";
             } else {
                 echo "<script>alert('Gagal simpan ke database.');</script>";
@@ -41,13 +45,19 @@ if (isset($_POST['btn_simpan'])) {
 // --- LOGIC HAPUS ---
 if (isset($_GET['hapus'])) {
     $id = $_GET['hapus'];
-    $q_cek = mysqli_query($koneksi, "SELECT image FROM liputan WHERE id='$id'");
+    $q_cek = mysqli_query($koneksi, "SELECT * FROM liputan WHERE id='$id'");
     $data = mysqli_fetch_assoc($q_cek);
+    
     $path_gambar = "../../../" . $data['image'];
     if (file_exists($path_gambar)) { unlink($path_gambar); }
     
     $delete = mysqli_query($koneksi, "DELETE FROM liputan WHERE id='$id'");
     if ($delete) {
+        
+        // [HISTORI] CATAT LOG
+        $nm = $data['media_name'] ?? 'ID '.$id;
+        if(function_exists('catat_log')) catat_log($koneksi, "Hapus Media", "Menghapus media: $nm");
+
         echo "<script>alert('Data berhasil dihapus!'); window.location='media.php';</script>";
     }
 }
@@ -71,34 +81,29 @@ $query_media = mysqli_query($koneksi, "SELECT * FROM liputan ORDER BY id DESC");
     <style>
         .img-table { width: 80px; height: 50px; object-fit: contain; border: 1px solid #ddd; background: #fff; padding: 2px; border-radius: 4px; }
 
-        /* --- NETFLIX STYLE CSS (Sama persis dgn Index) --- */
+        /* --- NETFLIX STYLE CSS --- */
         .preview-area {
-            background-color: #f8f9fc;
-            border: 2px dashed #ddd;
-            border-radius: 10px;
-            padding: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 300px;
+            background-color: #eef2f7; border: 2px dashed #ccc; border-radius: 10px;
+            padding: 50px; display: flex; justify-content: center; align-items: flex-start;
+            min-height: 400px; overflow: visible; 
         }
 
-        .media-container { position: relative; padding: 10px; width: 280px; /* Ukuran simulasi card */ }
+        .media-container { position: relative; width: 250px; perspective: 1000px; z-index: 10; }
 
         .media-logo-box {
-            background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            padding: 20px; height: 150px; display: flex; align-items: center; justify-content: center;
-            border: 1px solid #eee; transition: 0.3s; cursor: pointer;
+            background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 20px; height: 140px; display: flex; align-items: center; justify-content: center;
+            border: 1px solid #ddd; transition: 0.3s; cursor: pointer; position: relative; z-index: 1;
         }
         .media-logo-box img { max-height: 80px; max-width: 100%; object-fit: contain; filter: grayscale(100%); transition: 0.3s; }
-        .media-container:hover .media-logo-box img { filter: grayscale(0%); }
-
+        
         .media-popup-card {
-            display: none; position: absolute; top: -20%; left: -10%; width: 120%;
+            display: none; position: absolute; top: -30%; left: -10%; width: 120%;
             background-color: #141414; color: #fff; border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 999; overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6); z-index: 9999; overflow: hidden;
             animation: popUp 0.3s forwards;
         }
+
         @keyframes popUp { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
 
         .popup-video { position: relative; width: 100%; height: 160px; background: #000; }
@@ -113,6 +118,7 @@ $query_media = mysqli_query($koneksi, "SELECT * FROM liputan ORDER BY id DESC");
             font-size: 12px; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
         }
         
+        .media-container:hover .media-logo-box img { filter: grayscale(0%); }
         .media-container:hover .media-popup-card { display: block; }
     </style>
 </head>
@@ -182,9 +188,9 @@ $query_media = mysqli_query($koneksi, "SELECT * FROM liputan ORDER BY id DESC");
             </footer>
         </div>
     </div>
-
-    <div class="modal fade" id="modalTambah" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-xl" role="document"> <div class="modal-content">
+    <div class="modal fade" id="modalTambah" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 1050;">
+        <div class="modal-dialog modal-xl" role="document"> 
+            <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title font-weight-bold">Input Media Baru</h5>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
@@ -219,17 +225,14 @@ $query_media = mysqli_query($koneksi, "SELECT * FROM liputan ORDER BY id DESC");
                             </div>
 
                             <div class="col-lg-7 border-left">
-                                <h6 class="font-weight-bold text-gray-800 mb-3">Live Preview (Tampilan Customer)</h6>
+                                <h6 class="font-weight-bold text-gray-800 mb-3">Live Preview</h6>
                                 <p class="small text-muted">Arahkan mouse ke logo di bawah untuk melihat efek Netflix Card.</p>
                                 
                                 <div class="preview-area">
-                                    
                                     <div class="media-container" id="previewContainer">
-                                        
                                         <div class="media-logo-box">
                                             <img src="https://via.placeholder.com/150?text=Logo" id="prevLogo" alt="Logo">
                                         </div>
-
                                         <div class="media-popup-card">
                                             <div class="popup-video" id="prevVideoArea">
                                                 <img src="https://via.placeholder.com/300x200?text=Video+Preview" style="width:100%;height:100%;object-fit:cover;opacity:0.5;">
@@ -243,9 +246,8 @@ $query_media = mysqli_query($koneksi, "SELECT * FROM liputan ORDER BY id DESC");
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
-                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -264,25 +266,25 @@ $query_media = mysqli_query($koneksi, "SELECT * FROM liputan ORDER BY id DESC");
     <script src="../../../assets/template/sbadmin2/js/sb-admin-2.min.js"></script>
 
     <script>
-        // Fungsi Parsing ID Youtube
         function getYoutubeId(url) {
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
             const match = url.match(regExp);
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        // 1. Preview Nama & Deskripsi Realtime
         $('#inpName').on('input', function() { $('#prevTitle').text($(this).val() || 'Nama Media'); });
-        $('#inpDesc').on('input', function() { $('#prevDesc').text($(this).val().substring(0,80) + '...' || 'Deskripsi...'); });
+        $('#inpDesc').on('input', function() { 
+            let val = $(this).val();
+            if(val.length > 80) val = val.substring(0,80) + '...';
+            $('#prevDesc').text(val || 'Deskripsi...'); 
+        });
 
-        // 2. Preview Logo (FileReader)
         $('#inpFile').change(function() {
             const file = this.files[0];
             if(file){
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     $('#prevLogo').attr('src', e.target.result);
-                    // Update juga background di popup jika bukan youtube
                     if(!$('#prevVideoArea iframe').length) {
                         $('#prevVideoArea img').attr('src', e.target.result);
                     }
@@ -292,7 +294,6 @@ $query_media = mysqli_query($koneksi, "SELECT * FROM liputan ORDER BY id DESC");
             }
         });
 
-        // 3. Preview Video Link (Youtube Logic)
         $('#inpLink').on('input', function() {
             const url = $(this).val();
             const ytId = getYoutubeId(url);
@@ -300,12 +301,10 @@ $query_media = mysqli_query($koneksi, "SELECT * FROM liputan ORDER BY id DESC");
             const typeLabel = $('#prevType');
 
             if(ytId) {
-                // Jika Link Youtube -> Pasang Iframe
                 const embedUrl = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0`;
                 videoArea.html(`<iframe src="${embedUrl}" allow="autoplay"></iframe>`);
                 typeLabel.text('YouTube');
             } else {
-                // Jika Bukan Youtube -> Pasang Gambar Logo (Fallback)
                 const currentLogo = $('#prevLogo').attr('src');
                 videoArea.html(`<img src="${currentLogo}" style="width:100%;height:100%;object-fit:cover;opacity:0.5;">`);
                 typeLabel.text('Artikel');

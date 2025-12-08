@@ -94,11 +94,11 @@ if (!isset($_SESSION['is_login']) || $_SESSION['kategori'] != 'admin') {
                                                 <span class="badge badge-info"><?= $data['estimation']; ?></span>
                                             </td>
                                             <td class="text-center">
-                                                <a href="edit_produk.php?id=<?= $data['id']; ?>" class="btn btn-warning btn-sm btn-circle" title="Edit">
+                                                <a href="../action/edit_produk.php?id=<?= $data['id']; ?>" class="btn btn-warning btn-sm btn-circle" title="Edit">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
                                                 
-                                                <a href="hapus_produk.php?id=<?= $data['id']; ?>" class="btn btn-danger btn-sm btn-circle" onclick="return confirm('Yakin ingin menghapus produk ini?')" title="Hapus">
+                                                <a href="../action/hapus_produk.php?id=<?= $data['id']; ?>" class="btn btn-danger btn-sm btn-circle" onclick="return confirm('Yakin ingin menghapus produk ini?')" title="Hapus">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>

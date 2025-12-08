@@ -1,5 +1,9 @@
 {
+    "name": "dbubuy/project-skripsi",
     "require": {
         "midtrans/midtrans-php": "^2.6"
+    },
+    "require-dev": {
+        "phpdocumentor/phpdocumentor": "^3.9"
     }
 }

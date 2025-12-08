@@ -1,144 +1,213 @@
 <?php
 session_start();
+require_once '../../../config/koneksi.php';
 
-// Koneksi Database
-$koneksi = mysqli_connect("localhost", "root", "", "si_gudang");
-if (!$koneksi) { die("Koneksi Gagal: " . mysqli_connect_error()); }
+// 1. Cek Login Admin
+if (!isset($_SESSION['is_login']) || $_SESSION['kategori'] != 'admin') {
+    header("Location: ../../../pages/login.php");
+    exit;
+}
 
-// Ambil ID dari URL
+// 2. Ambil ID Produk dari URL
 if (!isset($_GET['id'])) {
-    header("Location: produk.php");
+    header("Location: ../pages/produk.php");
     exit;
 }
 $id = $_GET['id'];
 
-// Ambil Data Produk Lama
+// 3. Ambil Data Produk Lama (DATA LAMA/OLD DATA)
 $query = mysqli_query($koneksi, "SELECT * FROM products WHERE id = '$id'");
-$data  = mysqli_fetch_assoc($query);
+$data = mysqli_fetch_assoc($query);
 
-// LOGIKA UPDATE
-if (isset($_POST['update'])) {
+if (!$data) {
+    echo "<script>alert('Data tidak ditemukan!'); window.location='../pages/produk.php';</script>";
+    exit;
+}
+
+// 4. PROSES UPDATE DATA
+if (isset($_POST['btn_update'])) {
+    
+    // Data Baru (NEW DATA)
     $nama       = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $harga      = $_POST['harga'];
     $estimasi   = $_POST['estimasi'];
     $deskripsi  = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
     $foto_lama  = $_POST['foto_lama'];
 
-    // Cek apakah user upload foto baru?
-    if ($_FILES['foto']['name'] != "") {
-        $nama_file   = $_FILES['foto']['name'];
-        $tmp_file    = $_FILES['foto']['tmp_name'];
-        $nama_baru   = time() . "_" . $nama_file; // Rename 
-        $path_upload = "../../assets/img/" . $nama_baru; // Path fisik
-        $path_db     = "assets/img/" . $nama_baru;     // Path database
+    // --- LOGIKA DETEKSI PERUBAHAN (LOGGING) ---
+// --- LOGIKA DETEKSI PERUBAHAN (LOGGING) ---
+    $perubahan = [];
 
-        // Upload foto baru
-        if (move_uploaded_file($tmp_file, $path_upload)) {
-            // Hapus foto lama dari folder)
-            if (file_exists("../../" . $foto_lama)) {
-                unlink("../../" . $foto_lama);
-            }
-            $foto_final = $path_db;
-        } else {
-            $foto_final = $foto_lama; // Jika gagal upload, pakai yang lama
-        }
-    } else {
-        // Jika tidak ganti foto
-        $foto_final = $foto_lama;
+    if ($data['name'] != $nama) {
+        $perubahan[] = "Nama: '{$data['name']}' -> '$nama'";
+    }
+    // PERBAIKAN: Pakai number_format indo (0, ',', '.') biar pake titik
+    if ($data['price'] != $harga) {
+        $perubahan[] = "Harga: Rp " . number_format($data['price'], 0, ',', '.') . " -> Rp " . number_format($harga, 0, ',', '.');
+    }
+    if ($data['estimation'] != $estimasi) {
+        $perubahan[] = "Estimasi: '{$data['estimation']}' -> '$estimasi'";
+    }
+    if ($data['description'] != $deskripsi) {
+        $perubahan[] = "Deskripsi diubah"; 
     }
 
-    // Query Update
-    $sql = "UPDATE products SET 
-            name = '$nama', price = '$harga', estimation = '$estimasi', 
-            description = '$deskripsi', image = '$foto_final' 
-            WHERE id = '$id'";
+    // --- LOGIKA FOTO ---
+    $foto_nama = $_FILES['foto']['name'];
+    $foto_tmp  = $_FILES['foto']['tmp_name'];
+    
+    if ($foto_nama != "") {
+        $perubahan[] = "Foto produk diganti"; 
 
-    if (mysqli_query($koneksi, $sql)) {
-        echo "<script>alert('Produk Berhasil Diupdate!'); window.location='produk.php';</script>";
+        $nama_baru = time() . "_" . $foto_nama;
+        $upload_dir = "../../../assets/img/";
+        
+        if (move_uploaded_file($foto_tmp, $upload_dir . $nama_baru)) {
+            if (file_exists("../../../" . $foto_lama) && $foto_lama != "") {
+                unlink("../../../" . $foto_lama);
+            }
+            $foto_db = "assets/img/" . $nama_baru;
+            $q_update = "UPDATE products SET name='$nama', price='$harga', estimation='$estimasi', description='$deskripsi', image='$foto_db' WHERE id='$id'";
+        }
     } else {
-        echo "<script>alert('Gagal Update!');</script>";
+        $q_update = "UPDATE products SET name='$nama', price='$harga', estimation='$estimasi', description='$deskripsi' WHERE id='$id'";
+    }
+
+    // Eksekusi Query
+    if (mysqli_query($koneksi, $q_update)) {
+        
+        // [HISTORI DETAIL]
+        if (!empty($perubahan)) {
+            // PERBAIKAN: Ganti pemisah jadi PIPA (|) bukan Koma (,)
+            $detail_log = "Mengedit Produk ID #$id. Detail: " . implode(' | ', $perubahan);
+            
+            if(function_exists('catat_log')) {
+                catat_log($koneksi, "Edit Produk", $detail_log);
+            }
+        }
+        
+        echo "<script>alert('Produk Berhasil Diperbarui!'); window.location='../pages/produk.php';</script>";
+    }else {
+        echo "<script>alert('Gagal Update: " . mysqli_error($koneksi) . "');</script>";
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit Produk - Admin D'Bubuy</title>
-    <link href="../../assets/template/sbadmin2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="../../assets/template/sbadmin2/css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="../../assets/css/admin.css" rel="stylesheet">
+
+    <link href="../../../assets/template/sbadmin2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="../../../assets/template/sbadmin2/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../../../assets/css/admin.css" rel="stylesheet"> 
+    
+    <style>
+        .img-preview-container {
+            width: 100%; height: 250px;
+            border: 2px dashed #ddd; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; background-color: #f8f9fc; position: relative;
+        }
+        .img-preview { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .preview-label { position: absolute; bottom: 5px; right: 5px; font-size: 10px; background: rgba(0,0,0,0.5); color: #fff; padding: 2px 5px; border-radius: 3px; }
+    </style>
 </head>
 
 <body id="page-top">
     <div id="wrapper">
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index_admin.php">
-                <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-utensils"></i></div>
-                <div class="sidebar-brand-text mx-3">Admin D'Bubuy</div>
-            </a>
-            <li class="nav-item"><a class="nav-link" href="index_admin.php"><i class="fas fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
-            <li class="nav-item active"><a class="nav-link" href="produk.php"><i class="fas fa-fw fa-box"></i> Kelola Produk</a></li>
-        </ul>
-
+        <?php include '../../admin/partials/sidebar.php'; ?>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"></nav>
+                <?php include '../../admin/partials/topbar.php'; ?>
 
                 <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Edit Produk</h1>
+                        <a href="../pages/produk.php" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+                            <i class="fas fa-arrow-left fa-sm text-white-50"></i> Kembali
+                        </a>
+                    </div>
+
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Form Edit Produk</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Edit Data Menu: <?= $data['name'] ?></h6>
                         </div>
                         <div class="card-body">
                             <form method="POST" enctype="multipart/form-data">
-                                
-                                <div class="form-group">
-                                    <label>Nama Produk</label>
-                                    <input type="text" name="nama" class="form-control" value="<?= $data['name']; ?>" required>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Harga (Rp)</label>
-                                        <input type="number" name="harga" class="form-control" value="<?= $data['price']; ?>" required>
+                                <input type="hidden" name="foto_lama" value="<?= $data['image'] ?>">
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-dark">Nama Produk</label>
+                                            <input type="text" name="nama" class="form-control" value="<?= htmlspecialchars($data['name']) ?>" required>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label class="font-weight-bold text-dark">Harga (Rp)</label>
+                                                <input type="number" name="harga" class="form-control" value="<?= $data['price'] ?>" required>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="font-weight-bold text-dark">Estimasi Waktu</label>
+                                                <input type="text" name="estimasi" class="form-control" value="<?= htmlspecialchars($data['estimation']) ?>" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-dark">Deskripsi</label>
+                                            <textarea name="deskripsi" class="form-control" rows="5" required><?= htmlspecialchars($data['description']) ?></textarea>
+                                        </div>
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label>Estimasi Waktu</label>
-                                        <input type="text" name="estimasi" class="form-control" value="<?= $data['estimation']; ?>" required>
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-dark">Foto Makanan</label>
+                                            <div class="img-preview-container mb-3">
+                                                <img id="imgPreview" class="img-preview" src="../../../<?= $data['image'] ?>" alt="Foto Produk">
+                                                <span class="preview-label">Preview Gambar</span>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="foto" class="custom-file-input" id="fotoInput" accept="image/*" onchange="previewImage()">
+                                                <label class="custom-file-label" for="fotoInput">Ganti Foto (Opsional)...</label>
+                                            </div>
+                                            <small class="text-muted mt-2 d-block">Biarkan kosong jika tidak ingin mengubah foto.</small>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label>Deskripsi</label>
-                                    <textarea name="deskripsi" class="form-control" rows="3" required><?= $data['description']; ?></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Gambar Saat Ini</label><br>
-                                    <img src="../../<?= $data['image']; ?>" style="width:100px; border-radius:10px; margin-bottom:10px;">
-                                    
-                                    <input type="hidden" name="foto_lama" value="<?= $data['image']; ?>">
-                                    
-                                    <br>
-                                    <label>Ganti Gambar (Opsional)</label>
-                                    <input type="file" name="foto" class="form-control-file">
-                                </div>
-
                                 <hr>
-                                <button type="submit" name="update" class="btn btn-primary">Simpan Perubahan</button>
-                                <a href="produk.php" class="btn btn-secondary">Batal</a>
+                                <div class="text-right">
+                                    <button type="submit" name="btn_update" class="btn btn-primary btn-icon-split px-4 py-2">
+                                        <span class="icon text-white-50"><i class="fas fa-save"></i></span>
+                                        <span class="text">Simpan Perubahan</span>
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto"><div class="copyright text-center my-auto"><span>Copyright &copy; D'Bubuy 2025</span></div></div>
+            </footer>
         </div>
     </div>
-    <script src="../../assets/template/sbadmin2/vendor/jquery/jquery.min.js"></script>
-    <script src="../../assets/template/sbadmin2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/template/sbadmin2/js/sb-admin-2.min.js"></script>
+
+    <script src="../../../assets/template/sbadmin2/vendor/jquery/jquery.min.js"></script>
+    <script src="../../../assets/template/sbadmin2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../assets/template/sbadmin2/js/sb-admin-2.min.js"></script>
+    <script>
+        function previewImage() {
+            const foto = document.querySelector('#fotoInput');
+            const imgPreview = document.querySelector('#imgPreview');
+            const label = document.querySelector('.custom-file-label');
+            if(foto.files && foto.files[0]){
+                label.textContent = foto.files[0].name;
+                const oFReader = new FileReader();
+                oFReader.readAsDataURL(foto.files[0]);
+                oFReader.onload = function(oFREvent) { imgPreview.src = oFREvent.target.result; }
+            }
+        }
+    </script>
 </body>
 </html>
