@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 03, 2025 at 01:42 AM
+-- Generation Time: Dec 09, 2025 at 01:59 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.16
 
@@ -51,6 +51,58 @@ INSERT INTO `liputan` (`id`, `media_name`, `description`, `image`, `link_url`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `logs`
+--
+
+CREATE TABLE `logs` (
+  `id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `username` varchar(100) DEFAULT NULL,
+  `action` varchar(255) DEFAULT NULL,
+  `details` text,
+  `ip_address` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `logs`
+--
+
+INSERT INTO `logs` (`id`, `user_id`, `username`, `action`, `details`, `ip_address`, `created_at`) VALUES
+(1, 5, 'Admin', 'Unbanned User', 'Mengubah status user ID: 7', '127.0.0.1', '2025-12-07 15:45:53'),
+(2, 5, 'Admin', 'Banned User', 'Mengubah status user ID: 8', '127.0.0.1', '2025-12-07 15:46:29'),
+(3, 5, 'Admin', 'Unbanned User', 'Mengubah status user ID: 8', '127.0.0.1', '2025-12-07 15:46:43'),
+(4, 5, 'Admin', 'Update Status', 'Mengubah status Order #ORD-1764753770-468 menjadi success', '127.0.0.1', '2025-12-07 15:47:07'),
+(5, 5, 'Admin', 'Hapus Media', 'Menghapus media: On The Spot', '127.0.0.1', '2025-12-07 15:51:12'),
+(6, 5, 'Admin', 'Edit Produk', 'Mengupdate data produk: Bubuy Bebek enak', '127.0.0.1', '2025-12-07 15:57:07'),
+(7, 5, 'Admin', 'Edit Produk', 'Mengupdate data produk: Bubuy Bebek', '127.0.0.1', '2025-12-07 15:57:41'),
+(8, 5, 'Admin', 'Tambah Produk', 'Menambahkan produk baru: Bubuy Ayam Kampungas', '127.0.0.1', '2025-12-07 16:04:02'),
+(9, 5, 'Admin', 'Edit Produk', 'Mengupdate data produk: Bubuy Ayam Kampunan', '127.0.0.1', '2025-12-07 16:05:10'),
+(10, 5, 'Admin', 'Hapus Produk', 'Menghapus produk: Bubuy Ayam Kampunan', '127.0.0.1', '2025-12-07 16:05:26'),
+(11, 5, 'Admin', 'Edit Produk', 'Mengupdate data produk: Ayam Geprek', '127.0.0.1', '2025-12-07 16:06:44'),
+(12, 5, 'Admin', 'Hapus Produk', 'Menghapus produk: Ayam Geprek', '127.0.0.1', '2025-12-07 16:07:19'),
+(13, 5, 'Admin', 'Edit Produk', 'Mengedit Produk ID #4. Detail: Nama: \'Bubuy Bebek\' -> \'Bubuy Bebek Enak \', Harga: Rp 160,000 -> Rp 160,001', '127.0.0.1', '2025-12-07 16:14:39'),
+(14, 5, 'Admin', 'Edit Produk', 'Mengedit Produk ID #4. Detail: Nama: \'Bubuy Bebek Enak \' -> \'Bubuy Bebek\', Harga: Rp 160,001 -> Rp 160,000', '127.0.0.1', '2025-12-07 16:21:49'),
+(15, 5, 'Admin', 'Edit Produk', 'Mengedit Produk ID #4. Detail: Harga: Rp 160.000 -> Rp 160.011', '127.0.0.1', '2025-12-07 16:27:21'),
+(16, 5, 'Admin', 'Edit Produk', 'Mengedit Produk ID #4. Detail: Harga: Rp 160.011 -> Rp 160.010', '127.0.0.1', '2025-12-07 16:27:59'),
+(17, 5, 'Admin', 'Edit Produk', 'Mengedit Produk ID #4. Detail: Nama: \'Bubuy Bebek\' -> \'Bubuy Bebek baru\' | Harga: Rp 160.010 -> Rp 160.000 | Estimasi: \'5 hari\' -> \'4 hari\' | Deskripsi diubah', '127.0.0.1', '2025-12-07 16:28:29'),
+(18, 5, 'Admin', 'Edit Produk', 'Mengedit Produk ID #4. Detail: Nama: \'Bubuy Bebek baru\' -> \'Bubuy Bebek \' | Estimasi: \'4 hari\' -> \'5 hari\'', '127.0.0.1', '2025-12-07 16:28:55'),
+(19, 5, 'Admin', 'Logout', 'User keluar dari sistem', '127.0.0.1', '2025-12-08 03:10:54'),
+(20, 6, 'cust', 'Logout', 'User keluar dari sistem', '127.0.0.1', '2025-12-08 03:11:31'),
+(21, 5, 'Admin', 'Logout', 'User keluar dari sistem', '127.0.0.1', '2025-12-08 03:19:23'),
+(22, 6, 'cust', 'Logout', 'User keluar dari sistem', '127.0.0.1', '2025-12-08 03:19:57'),
+(23, 9, 'prabu pacarnya qisty cantik', 'Login', 'User login', '127.0.0.1', '2025-12-08 03:29:52'),
+(24, 9, 'prabu pacarnya qisty cantik', 'Logout', 'User keluar dari sistem', '127.0.0.1', '2025-12-08 03:29:56'),
+(25, 5, 'Admin', 'Login', 'User login', '127.0.0.1', '2025-12-08 03:36:42'),
+(26, 5, 'Admin', 'Logout', 'User keluar dari sistem', '127.0.0.1', '2025-12-08 03:36:44'),
+(27, 9, 'prabu pacarnya qisty cantik', 'Login', 'User login', '127.0.0.1', '2025-12-08 03:37:00'),
+(28, 9, 'prabu pacarnya qisty cantik', 'Logout', 'User keluar dari sistem', '127.0.0.1', '2025-12-08 03:37:03'),
+(29, 5, 'Admin', 'Login', 'User login', '127.0.0.1', '2025-12-08 10:49:35'),
+(30, 5, 'Admin', 'Logout', 'User keluar dari sistem', '127.0.0.1', '2025-12-08 10:50:10');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `orders`
 --
 
@@ -74,7 +126,14 @@ INSERT INTO `orders` (`id`, `customer_name`, `customer_email`, `customer_phone`,
 ('ORD-1764600968-323', 'cust', '2qistysauva@gmail.com', '081234567890', 'PICKUP - Ambil di Tempat', 160000.00, 'pending', '31e70719-9f91-46e5-9d2e-95b754b160ae', '2025-12-01 14:56:09'),
 ('ORD-1764601284-239', 'cust', '2qistysauva@gmail.com', '081234567890', 'PICKUP - Ambil di Tempat', 160000.00, 'pending', '1a50479f-49b9-4e96-bdc1-df9c6cf31df8', '2025-12-01 15:01:25'),
 ('ORD-1764601953-633', 'cust', '2qistysauva@gmail.com', '081234567890', 'PICKUP - Ambil di Tempat', 425000.00, 'success', '5db434f3-ac3f-41a7-a179-ee3e3eaef937', '2025-12-01 15:12:34'),
-('ORD-1764642608-294', 'cust', 'prabualamtian@gmail.com', '081234567890', 'PICKUP - Ambil di Tempat', 120000.00, 'pending', '51b3ce78-eb2b-4cd8-8f01-86666f966f73', '2025-12-02 02:30:10');
+('ORD-1764642608-294', 'cust', 'prabualamtian@gmail.com', '081234567890', 'PICKUP - Ambil di Tempat', 120000.00, 'pending', '51b3ce78-eb2b-4cd8-8f01-86666f966f73', '2025-12-02 02:30:10'),
+('ORD-1764739935-480', 'cust', 'prabualamtian@gmail.com', '081234567890', 'PICKUP - Ambil di Tempat', 160000.00, 'pending', 'adc980ce-0aaa-447d-b284-b1d166fb2624', '2025-12-03 05:32:22'),
+('ORD-1764740299-352', 'cust', 'prabualamtian@gmail.com', '081234567890', 'PICKUP - Ambil di Tempat', 120000.00, 'pending', '9765c6f3-1552-4b68-bcdf-522e9607121b', '2025-12-03 05:38:21'),
+('ORD-1764740709-855', 'cust', 'prabualamtian@gmail.com', '081234567890', 'PICKUP - Ambil di Tempat', 120000.00, 'pending', 'ff854a86-be8c-4a62-92d5-9fa5746d191d', '2025-12-03 05:45:10'),
+('ORD-1764740842-134', 'cust', 'prabualamtian@gmail.com', '081234567890', 'PICKUP - Ambil di Tempat', 120000.00, 'pending', 'f974c16f-da54-4461-ad77-427697f04b87', '2025-12-03 05:47:24'),
+('ORD-1764749042-555', 'cust', 'prabualamtian@gmail.com', '081234567890', 'PICKUP - Ambil di Tempat', 280000.00, 'proses', 'a196ce0b-fe87-456a-bb56-e6a8e93d2411', '2025-12-03 08:04:04'),
+('ORD-1764753749-900', 'cust', 'prabualamtian@gmail.com', '081234567890', 'PICKUP - Ambil di Tempat', 160000.00, 'pending', '11b420c5-778f-4738-b603-bde65f27bfd0', '2025-12-03 09:22:32'),
+('ORD-1764753770-468', 'cust', 'prabualamtian@gmail.com', '081234567890', 'PICKUP - Ambil di Tempat', 240000.00, 'success', '6ef60405-7ad5-470e-a48b-d1b97e2685a5', '2025-12-03 09:22:51');
 
 -- --------------------------------------------------------
 
@@ -101,7 +160,15 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_name`, `pric
 (6, 'ORD-1764601953-633', 4, 'Bubuy Bebek', 160000.00, 1),
 (7, 'ORD-1764601953-633', 3, 'Bubuy Ikan ', 120000.00, 1),
 (8, 'ORD-1764601953-633', 2, 'Bubuy Ayam Kampung', 145000.00, 1),
-(9, 'ORD-1764642608-294', 3, 'Bubuy Ikan ', 120000.00, 1);
+(9, 'ORD-1764642608-294', 3, 'Bubuy Ikan ', 120000.00, 1),
+(10, 'ORD-1764739935-480', 4, 'Bubuy Bebek', 160000.00, 1),
+(11, 'ORD-1764740299-352', 3, 'Bubuy Ikan ', 120000.00, 1),
+(12, 'ORD-1764740709-855', 3, 'Bubuy Ikan ', 120000.00, 1),
+(13, 'ORD-1764740842-134', 3, 'Bubuy Ikan ', 120000.00, 1),
+(14, 'ORD-1764749042-555', 4, 'Bubuy Bebek', 160000.00, 1),
+(15, 'ORD-1764749042-555', 3, 'Bubuy Ikan ', 120000.00, 1),
+(16, 'ORD-1764753749-900', 4, 'Bubuy Bebek', 160000.00, 1),
+(17, 'ORD-1764753770-468', 3, 'Bubuy Ikan ', 120000.00, 2);
 
 -- --------------------------------------------------------
 
@@ -126,7 +193,7 @@ CREATE TABLE `products` (
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `estimation`, `image`, `created_at`) VALUES
 (2, 'Bubuy Ayam Kampung', 'bubuy dbuat menggunakan ayam kampung berkualitas tinggi dengan menghadirkan keauthentikan rasa yang stabis menggunakan resep turun temurun', 145000, '2 hari', 'assets/img/1764122764_file_2025-11-24_14.13.56.png', '2025-11-26 02:06:04'),
 (3, 'Bubuy Ikan ', 'menggunakan ikna pilihan dengan menyajikan rasa khas dbubuy maatik', 120000, '1 hari', 'assets/img/1764122811_file_2025-11-24_14.13.56.png', '2025-11-26 02:06:51'),
-(4, 'Bubuy Bebek', 'Bubuy dengan menu terbatas yang menghadirkan rasa terbaik dan kualitas yang terjaga.', 160000, '5 hari', 'assets/img/1764122865_file_2025-11-24_14.13.56.png', '2025-11-26 02:07:45');
+(4, 'Bubuy Bebek ', 'Bubuy dengan menu terbatas yang menghadirkan rasa terbaik dan kualitas yang terjaga..', 160000, '5 hari', 'assets/img/1764122865_file_2025-11-24_14.13.56.png', '2025-11-26 02:07:45');
 
 -- --------------------------------------------------------
 
@@ -156,7 +223,9 @@ INSERT INTO `users` (`id`, `nama_lengkap`, `no_whatsapp`, `wa_verified_at`, `use
 (3, 'Prabu Sauva', '085880278506', NULL, NULL, '$2y$10$BJyziEYMSgB3pXaUOHr.8e6hcEwb8Y555nXe77b9HINbHBLfl8V/e', 'customer', '2025-11-11 12:58:32', 0),
 (5, 'Admin', '081122334455', '2025-11-19 04:31:14', 'QistyCantikBanget', '$2y$10$UyXVsrOxiqYXI7OGzElz2udxNhKBV6qHZdFQwrxXGDD0xVV6x27Hm', 'admin', '2025-11-19 04:31:14', 0),
 (6, 'cust', '081234567890', NULL, NULL, '$2y$10$BJyziEYMSgB3pXaUOHr.8e6hcEwb8Y555nXe77b9HINbHBLfl8V/e', 'customer', '2025-11-24 13:26:36', 0),
-(7, 'dimas', '0000000000', NULL, 'dimas', '$2y$10$3Elbtu5YIyI9WddIefX3T.IwKG2u.sfzK7V.jYlbMUJJfVJecnriq', 'customer', '2025-12-02 03:29:00', 1);
+(7, 'dimas', '0000000000', NULL, 'dimas', '$2y$10$3Elbtu5YIyI9WddIefX3T.IwKG2u.sfzK7V.jYlbMUJJfVJecnriq', 'customer', '2025-12-02 03:29:00', 0),
+(8, 'qisty', '123456789012', NULL, 'qisty', '$2y$10$3tlKOnw7OqhgwIgA/YEjXukTzw7O0GwbB8Ues/.e31z.VFgYp/IIu', 'customer', '2025-12-03 07:10:34', 0),
+(9, 'prabu pacarnya qisty cantik', '081122334411', NULL, 'prabu pacarnya qisty cantik', '$2y$10$XfOjxA8W16hz3aM/.Y/cjO6pXLzTtCLE0tUUITsghUP5BSNLo3tvC', 'customer', '2025-12-08 03:29:39', 0);
 
 --
 -- Indexes for dumped tables
@@ -166,6 +235,12 @@ INSERT INTO `users` (`id`, `nama_lengkap`, `no_whatsapp`, `wa_verified_at`, `use
 -- Indexes for table `liputan`
 --
 ALTER TABLE `liputan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `logs`
+--
+ALTER TABLE `logs`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -203,25 +278,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `liputan`
 --
 ALTER TABLE `liputan`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `logs`
+--
+ALTER TABLE `logs`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
