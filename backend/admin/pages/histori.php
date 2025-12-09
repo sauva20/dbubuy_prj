@@ -15,8 +15,25 @@ if(isset($_GET['bersihkan'])) {
     header("Location: histori.php");
 }
 
-// 3. AMBIL DATA LOG
-$query_logs = mysqli_query($koneksi, "SELECT * FROM logs ORDER BY created_at DESC LIMIT 100");
+// 3. FITUR FILTERISASI
+$where_clause = "WHERE 1=1"; // Default semua data
+
+// Filter Tanggal
+$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+$end_date   = isset($_GET['end_date'])   ? $_GET['end_date']   : '';
+
+if (!empty($start_date) && !empty($end_date)) {
+    $where_clause .= " AND (DATE(created_at) BETWEEN '$start_date' AND '$end_date')";
+}
+
+// Filter Jenis Aksi
+$filter_aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
+if (!empty($filter_aksi)) {
+    $where_clause .= " AND action LIKE '%$filter_aksi%'";
+}
+
+// AMBIL DATA LOG DENGAN FILTER
+$query_logs = mysqli_query($koneksi, "SELECT * FROM logs $where_clause ORDER BY created_at DESC LIMIT 100");
 ?>
 
 <!DOCTYPE html>
@@ -57,6 +74,9 @@ $query_logs = mysqli_query($koneksi, "SELECT * FROM logs ORDER BY created_at DES
         .arrow-icon { color: #858796; font-size: 0.8rem; }
         
         .simple-log { font-style: italic; color: #5a5c69; background: #eaecf4; padding: 15px; border-radius: 5px; }
+
+        /* Filter Box */
+        .filter-box { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.05); margin-bottom: 25px; border-left: 5px solid #4e73df; }
     </style>
 </head>
 
@@ -67,6 +87,7 @@ $query_logs = mysqli_query($koneksi, "SELECT * FROM logs ORDER BY created_at DES
             <div id="content">
                 <?php include 'partials/topbar.php'; ?>
                 <div class="container-fluid">
+                    
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Histori Aktivitas Admin</h1>
                         <a href="histori.php?bersihkan=1" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" onclick="return confirm('Hapus log lama (>30 hari)?')">
@@ -74,9 +95,38 @@ $query_logs = mysqli_query($koneksi, "SELECT * FROM logs ORDER BY created_at DES
                         </a>
                     </div>
 
+                    <div class="filter-box">
+                        <form method="GET" class="row align-items-end">
+                            <div class="col-md-3">
+                                <label class="small font-weight-bold text-gray-600">Dari Tanggal</label>
+                                <input type="date" name="start_date" class="form-control" value="<?= $start_date ?>">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="small font-weight-bold text-gray-600">Sampai Tanggal</label>
+                                <input type="date" name="end_date" class="form-control" value="<?= $end_date ?>">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="small font-weight-bold text-gray-600">Jenis Aktivitas</label>
+                                <select name="aksi" class="form-control">
+                                    <option value="">-- Semua Aktivitas --</option>
+                                    <option value="Login" <?= ($filter_aksi == 'Login') ? 'selected' : '' ?>>Login / Logout</option>
+                                    <option value="Tambah" <?= ($filter_aksi == 'Tambah') ? 'selected' : '' ?>>Tambah Data</option>
+                                    <option value="Edit" <?= ($filter_aksi == 'Edit') ? 'selected' : '' ?>>Edit Data</option>
+                                    <option value="Hapus" <?= ($filter_aksi == 'Hapus') ? 'selected' : '' ?>>Hapus Data</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-filter mr-1"></i> Filter Data</button>
+                                <?php if(!empty($start_date) || !empty($filter_aksi)): ?>
+                                    <a href="histori.php" class="btn btn-light btn-block border mt-2">Reset</a>
+                                <?php endif; ?>
+                            </div>
+                        </form>
+                    </div>
+
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Log Aktivitas Terbaru</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Data Log Aktivitas</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -131,7 +181,7 @@ $query_logs = mysqli_query($koneksi, "SELECT * FROM logs ORDER BY created_at DES
                                             </td>
                                         </tr>
                                         <?php endwhile; else: ?>
-                                            <tr><td colspan="5" class="text-center py-5 text-muted">Belum ada aktivitas tercatat.</td></tr>
+                                            <tr><td colspan="5" class="text-center py-5 text-muted">Belum ada aktivitas tercatat sesuai filter.</td></tr>
                                         <?php endif; ?>
                                     </tbody>
                                 </table>
@@ -178,7 +228,7 @@ $query_logs = mysqli_query($koneksi, "SELECT * FROM logs ORDER BY created_at DES
     <script src="../../../assets/template/sbadmin2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../../assets/template/sbadmin2/js/sb-admin-2.min.js"></script>
 
-<script>
+    <script>
         $(document).ready(function() {
             $('.btn-view-log').on('click', function() {
                 var waktu = $(this).data('waktu');
@@ -194,30 +244,26 @@ $query_logs = mysqli_query($koneksi, "SELECT * FROM logs ORDER BY created_at DES
 
                 var htmlContent = '';
 
-                // Cek apakah ini log Edit Produk (Ada kata "Detail:")
+                // LOGIKA CERDAS: Cek apakah ada kata "Detail:" untuk dipisah
                 if (rawDetail.includes('Detail:')) {
-                    var parts = rawDetail.split('Detail:');
-                    var mainMsg = parts[0].trim();
-                    var changesStr = parts[1].trim();
-                    
-                    htmlContent += `<div class="mb-3 text-dark font-weight-bold"><i class="fas fa-tag text-gray-400 mr-2"></i>${mainMsg}</div>`;
+                    // Pisahkan Judul dan Isi
+                    var splitUtama = rawDetail.split('Detail:');
+                    var judul = splitUtama[0].trim();
+                    var isi = splitUtama[1].trim();
 
-                    // LOGIC BARU: Cek pemisahnya Pipa (|) atau Koma (,) untuk support data lama
-                    var changes;
-                    if (changesStr.includes('|')) {
-                        changes = changesStr.split('|'); // Data Baru (Aman)
-                    } else {
-                        changes = changesStr.split(','); // Data Lama (Mungkin Buggy)
-                    }
-
+                    htmlContent += `<div class="mb-3 text-gray-800 font-weight-bold">${judul}</div>`;
                     htmlContent += `<ul class="change-list">`;
 
+                    // Pisahkan per Pipa (|)
+                    var changes = isi.split('|');
+                    
                     changes.forEach(function(change) {
                         change = change.trim();
                         
+                        // Cek apakah ada tanda panah '->' (Edit Data)
                         if (change.includes('->')) {
-                            // Pisahkan Key dan Value dengan aman
-                            // Cari posisi titik dua (:) pertama
+                            // Format: "Key: Old -> New"
+                            // Kita cari titik dua pertama (:) untuk memisahkan Key
                             var colonIndex = change.indexOf(':');
                             
                             if (colonIndex > -1) {
@@ -239,17 +285,18 @@ $query_logs = mysqli_query($koneksi, "SELECT * FROM logs ORDER BY created_at DES
                                     </li>
                                 `;
                             } else {
+                                // Fallback jika format panah ada tapi tanpa titik dua
                                 htmlContent += `<li class="change-item">${change}</li>`;
                             }
                         } else {
-                            if(change !== "") {
-                                htmlContent += `<li class="change-item"><i class="fas fa-check-circle text-success mr-2"></i>${change}</li>`;
-                            }
+                            // Format biasa (bukan edit nilai)
+                            htmlContent += `<li class="change-item"><i class="fas fa-check-circle text-success mr-2"></i>${change}</li>`;
                         }
                     });
                     htmlContent += `</ul>`;
 
                 } else {
+                    // Jika tidak ada "Detail:", tampilkan biasa dalam kotak
                     htmlContent = `<div class="simple-log"><i class="fas fa-sticky-note mr-2"></i>${rawDetail}</div>`;
                 }
 

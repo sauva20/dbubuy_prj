@@ -103,12 +103,12 @@ if (isset($_POST['simpan'])) {
 <body id="page-top">
     <div id="wrapper">
 
-        <?php include '../../admin/partials/sidebar.php'; ?>
+        <?php include 'partials/sidebar.php'; ?>
 
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 
-                <?php include '../../admin/partials/topbar.php'; ?>
+                <?php include 'admin/partials/topbar.php'; ?>
 
                 <div class="container-fluid">
                     
