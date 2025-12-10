@@ -216,7 +216,7 @@ $json_data  = json_encode($data_chart);
                                                     <td class="font-weight-bold"><?= $p['name']; ?></td>
                                                     <td>Rp <?= number_format($p['price'],0,',','.'); ?></td>
                                                     <td>
-                                                        <a href="../produk/edit_produk.php?id=<?= $p['id']; ?>" class="btn btn-warning btn-sm btn-circle"><i class="fas fa-pen"></i></a>
+                                                        <a href="pages/edit_produk.php?id=<?= $p['id']; ?>" class="btn btn-warning btn-sm btn-circle"><i class="fas fa-pen"></i></a>
                                                     </td>
                                                 </tr>
                                                 <?php } ?>
