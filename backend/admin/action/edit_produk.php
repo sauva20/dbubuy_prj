@@ -119,10 +119,10 @@ if (isset($_POST['btn_update'])) {
 
 <body id="page-top">
     <div id="wrapper">
-        <?php include '../../admin/partials/sidebar.php'; ?>
+        <?php include 'partials/sidebar.php'; ?>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <?php include '../../admin/partials/topbar.php'; ?>
+                <?php include 'partials/topbar.php'; ?>
 
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">

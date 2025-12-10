@@ -25,11 +25,7 @@
                 <input type="hidden" name="action" value="register">
                 <h1>Buat Akun</h1>
                 
-                <div class="social-container">
-                    <a href="#" class="social"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="social"><i class="bi bi-google"></i></a>
-                </div>
-                <span>atau daftar manual</span>
+
                 
                 <input type="text" name="nama_lengkap" placeholder="Nama Lengkap" required />
                 <input type="text" name="no_whatsapp" placeholder="No. WhatsApp" required />
@@ -55,7 +51,7 @@
                 
                 <input type="text" name="no_whatsapp" placeholder="No. WhatsApp" required />
                 <input type="password" name="password" placeholder="Password" required />
-                <a href="#">Lupa Password Anda?</a>
+             
                 
                 <button type="submit">Masuk</button>
 
